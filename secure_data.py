@@ -135,8 +135,23 @@ elif choice == 'retrive data':
 
           if not user_data:
                st.info("No data Found")
+          else:
+               st.write("Encrpt data enteries: ")
+               for i,item in enumerate(user_data):
+                    st.code(item,language="text")
 
-               
+
+               encrpyt_input = st.text_area("Enter encrpt Text:")
+               passkey = st.text_input("enter passkey T decvrypt",type='password')
+
+               if st.button("Decrypt"):
+                    result = decrypt_text(encrpyt_input,passkey)
+                    if result:
+                         st.success("Decrypt",result)
+                         
+                
+
+
 
 
                

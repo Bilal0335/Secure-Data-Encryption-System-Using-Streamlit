@@ -95,4 +95,38 @@ elif choice == 'login':
           st.stop()
      username = st.text_input("Username")
      password = st.text_input("Password",type='password')
+
+     if st.button("login"):
+          if username in store_data and store_data[username]['password'] == hash_password(password):
+               st.session_state.authendicate_user = username
+               st.session_state.failed_attempts = 0
+               st.success(f"Welcome {username}!")
+          else:
+               st.session_state.failed_attempts += 1
+               remaining = 3 - st.session_state.failed_attempts
+               st.error(f"Invalid error credential! Attempt {remaining} left")
+               if st.session_state.failed_attempts >= 3:
+                    st.session_state.lockout_time = time.time() + LOGOUT_DURATION
+                    st.error("To many failed attempts. locked for 60 second")
+                    st.stop()
+
+#  data store section
+elif choice == 'store data':
+     if not st.session_state.authendicate_user:
+          st.warning("Please forst login")
+     else:
+          st.subheader("Store Encrpty data ")
+          data = st.text_area("Enter data to encrypt")
+          passkey = st.text_input("Encryption key(passphrase)",type="password")
+
+          if st.button("Encrypt ANd save"):
+               if data and passkey:
+                    encrpyt = encrypt_text(data,passkey)
+                    store_data[st.session_state.authendicate_user]['data'].append(encrpyt)
+                    save_data(store_data)
+                    st.success("data encrypt ans save data")
+                
+
+
+               
                

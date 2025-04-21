@@ -4,7 +4,6 @@ import json
 import os
 import time
 from cryptography.fernet import Fernet
-# from base64 import urlsafe_b64decode
 from base64 import urlsafe_b64encode
 from hashlib import pbkdf2_hmac
 
@@ -126,6 +125,18 @@ elif choice == 'store data':
                     save_data(store_data)
                     st.success("data encrypt ans save data")
                 
+# data retrive section
+elif choice == 'retrive data':
+     if not st.session_state.authendicate_user:
+          st.warning("Please first login")
+     else:
+          st.subheader("Retrive data")
+          user_data = store_data.get(st.session_state.authendicate_user,{}).get('data',{})
+
+          if not user_data:
+               st.info("No data Found")
+
+               
 
 
                
